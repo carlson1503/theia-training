@@ -40,17 +40,11 @@ export class FileListWidget extends ReactWidget {
     protected current: FileStat | undefined;
 
     protected render(): React.ReactNode {
-        /* TODO implement rendering
-        - Implement rendering of a file list in `FileListWidget.render`.
-        - The model of `FileListWidget` is a current file with a path which a user follows to open this file.
-        These variables are represented in code like `FileListWidget.current` and `FileListWidget.path` properties.
-        - If a path is not emptry then render `..` as a first element.
-        When a user clicks on it the last element of a path should be opened.
-        You can do it by calling `FileListWidget.openParent`.
-        - If a current file has children, i.e. it's a directory, then for each child file render `FileComponent`.
-        When a user clicks on a child node the corresponding file should be opened.
-        You can do it by calling `FileListWidget.openChild`.
-         */
+        const children = this.current && this.current.children;
+        return <React.Fragment>
+            {this.path.length > 0 && <div onClick={this.openParent}>..</div>}
+            {children && children.map((file, index) => <FileComponent key={index} file={file} labelProvider={this.labelProvider} onOpenFile={this.openChild} />)}
+        </React.Fragment>
         return null;
     }
 
@@ -96,11 +90,14 @@ export class FileListWidget extends ReactWidget {
 
 export class FileComponent extends React.Component<FileComponent.Props> {
 
+
+
     render(): React.ReactNode {
         // BONUS: render file icon
         // `LabelProvider.getIcon` provides an icon for the given object
         // but it is async, so the code should be refactored to first compute an icon and then trigger rerendering
-        return <div onClick={this.openFile}>{this.props.labelProvider.getName(this.props.file)}</div>;
+        
+    return <div className={this.props.labelProvider.getIcon(this.props.file)} onClick={this.openFile}>{this.props.labelProvider.getName(this.props.file)}</div>;
     }
 
     protected readonly openFile = (e: React.MouseEvent<HTMLDivElement>) => {
