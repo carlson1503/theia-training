@@ -8,7 +8,7 @@ import { JsonRpcProxy } from '@theia/core';
 export class FileComponent extends React.Component<FileComponent.Props> {
 
     render(): React.ReactNode {
-        return <div onClick={this.openFile}>{this.props.labelProvider.getName(new URI(this.props.uri))}</div>;
+        return <div className={this.props.labelProvider.getIcon(new URI(this.props.uri))} onClick={this.openFile}>{this.props.labelProvider.getName(new URI(this.props.uri))}</div>;
     }
 
     protected readonly openFile = (e: React.MouseEvent<HTMLDivElement>) => {
