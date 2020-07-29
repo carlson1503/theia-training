@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectable, inject } from "inversify";
-import { open, ReactWidget, LabelProvider, Message, OpenerService, StatefulWidget } from "@theia/core/lib/browser";
+import { open, ReactWidget, LabelProvider, Message, OpenerService, StatefulWidget, URIIconReference } from "@theia/core/lib/browser";
 import URI from '@theia/core/lib/common/uri';
 import { FileListService, Files } from '../common/file-list-protocol';
 import { JsonRpcProxy } from '@theia/core';
@@ -8,7 +8,9 @@ import { JsonRpcProxy } from '@theia/core';
 export class FileComponent extends React.Component<FileComponent.Props> {
 
     render(): React.ReactNode {
-        return <div className={this.props.labelProvider.getIcon(new URI(this.props.uri))} onClick={this.openFile}>{this.props.labelProvider.getName(new URI(this.props.uri))}</div>;
+        let style = { display: 'block' }
+        let uriIconReference = URIIconReference.create(this.props.isDictionary ? 'folder' : 'file', new URI(this.props.uri));
+        return <div style={style} className={this.props.labelProvider.getIcon(uriIconReference)} onClick={this.openFile}>{this.props.labelProvider.getName(new URI(this.props.uri))}</div>;
     }
 
     protected readonly openFile = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -21,6 +23,7 @@ export class FileComponent extends React.Component<FileComponent.Props> {
 }
 export namespace FileComponent {
     export interface Props {
+        isDictionary?: boolean;
         uri: string;
         labelProvider: LabelProvider;
         onOpenFile: (uri: string) => void
@@ -65,7 +68,7 @@ export class FileListWidget extends ReactWidget implements StatefulWidget {
         const children = this.current && this.current.children;
         return <React.Fragment>
             {this.path.length > 0 && <div onClick={this.openParent}>..</div>}
-            {children && children.map((uri, index) => <FileComponent key={index} uri={uri} labelProvider={this.labelProvider} onOpenFile={this.openChild} />)}
+            {children && children.map((uri, index) => <FileComponent isDictionary={false} key={index} uri={uri} labelProvider={this.labelProvider} onOpenFile={this.openChild} />)}
         </React.Fragment>
     }
 

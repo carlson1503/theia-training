@@ -36,7 +36,6 @@ export class NodeFileListService implements FileListService {
             children: files.map(file => currentUri.withPath(currentUri.path.join(file)).toString())
         };
         
-        throw new Error('not implemented');
     }
 
 }
