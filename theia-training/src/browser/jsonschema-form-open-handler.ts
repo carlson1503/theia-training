@@ -18,10 +18,10 @@ export class JsonschemaFormOpenHandler extends WidgetOpenHandler<JsonschemaFormW
     protected readonly preferences: JsonschemaFormPreferences;
 
     canHandle(uri: URI): number {
-        if (uri.path.ext !== '.json') {
+        if (uri.path.ext !== '.json' && uri.path.ext !== '.xml') {
             return 0;
         }
-        if (uri.path.name.endsWith(this.preferences["jsonschema-form.dataSuffix"])) {
+        if (uri.path.name.endsWith(this.preferences["jsonschema-form.dataSuffix"]) || uri.path.ext == '.xml') {
             return this.editorManager.canHandle(uri) * 2;    
         }
         return this.editorManager.canHandle(uri) / 2;

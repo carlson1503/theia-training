@@ -18,7 +18,9 @@ export class ReferencedModelStorage<T> implements Disposable {
         readonly modelService: MonacoTextModelService,
         readonly formDataProperty: string,
         readonly defaultValue: T
-    ) { }
+    ) { 
+        this.referencedModel = model;
+    }
 
     dispose(): void {
         this.toDispose.dispose();

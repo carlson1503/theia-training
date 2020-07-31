@@ -7,6 +7,7 @@ import { MonacoTextModelService } from "@theia/monaco/lib/browser/monaco-text-mo
 import { MonacoEditorModel } from "@theia/monaco/lib/browser/monaco-editor-model";
 import { Disposable, Reference } from "@theia/core";
 import { JsonschemaFormView } from "./jsonschema-form-view";
+import { ConsoleLogger } from "@theia/core/lib/common/logger-protocol";
 
 export const JsonschemaFormWidgetOptions = Symbol('JsonschemaFormWidgetOptions');
 export interface JsonschemaFormWidgetOptions {
@@ -53,8 +54,32 @@ export class JsonschemaFormWidget extends BaseWidget {
     protected onUpdateRequest(message: Message): void {
         super.onUpdateRequest(message);
         const model = this.reference && this.reference.object;
-        ReactDOM.render(model ? <JsonschemaFormView model={model} modelService={this.modelService} /> : null!, this.viewNode);
+        var xml2js = require('xml2js');
+        const xmlParser = new xml2js.Parser({explicitArray : false, ignoreAttrs : true});
+        if (model?.uri.slice(-4) === '.xml') {
+            // xml -> json
+            var node = this.viewNode;
+            xmlParser.parseString(model.getText(), function (err: any, result: any) {
+                //将返回的结果再次格式化
+                function map(object: any) : any {
+                    console.dir(object)
+                    return Object.keys(object).map(k => {
+                        return (
+                            typeof(object[k]) != 'object' ?
+                            <li key={k}>
+                              <div>{k} is : </div>
+                              <input value={object[k]}></input>
+                            </li>
+                            : map(object[k])
+                        );
+                    });
+                }
+                const element = map(result);
+                ReactDOM.render(element, node);
+            });
+        } else {
+            ReactDOM.render(model ? <JsonschemaFormView model={model} modelService={this.modelService} /> : null!, this.viewNode);
+        }
     }
-
 }
 

@@ -4,18 +4,19 @@
   "version": "0.0.0",
   "dependencies": {
     "@theia/core": "latest",
-    "@theia/filesystem": "latest",
-    "@theia/workspace": "latest",
-    "@theia/preferences": "latest",
-    "@theia/navigator": "latest",
-    "@theia/process": "latest",
-    "@theia/terminal": "latest",
     "@theia/editor": "latest",
+    "@theia/filesystem": "latest",
     "@theia/languages": "latest",
     "@theia/markers": "latest",
-    "@theia/monaco": "latest",
     "@theia/messages": "latest",
-    "theia-training": "0.0.0"
+    "@theia/monaco": "latest",
+    "@theia/navigator": "latest",
+    "@theia/preferences": "latest",
+    "@theia/process": "latest",
+    "@theia/terminal": "latest",
+    "@theia/workspace": "latest",
+    "theia-training": "0.0.0",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@theia/cli": "latest"
